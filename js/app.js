@@ -23,13 +23,51 @@ getFilm.addEventListener('load', pullFilmList);
 getFilm.open('GET' , 'http://swapi.co/api/films/');
 getFilm.send();
 
+function loadPlanets(ul, planetName){
+  const li2 = document.createElement("li");
+  const planetTextNode = document.createTextNode(planetName);
+  li2.appendChild(planetTextNode);
+  ul.appendChild(li2);
+}
+
 
 function pullFilmList() {
  const requestData = JSON.parse(this.responseText);
- const film = requestData.results[4].title;
- const films = document.querySelector('#filmList');
- films.innerHTML = 'My name is ' + film;
+
+ for( let i = 0;i<requestData.results.length;i++){
+   const li = document.createElement("li");
+   const film = requestData.results[i].title;
+   const filmTitle = document.createTextNode(film);
+   li.appendChild(filmTitle);
+   const filmList = document.querySelector('#filmList');
+  filmList.appendChild(li);
+  //Adding the list of film Planets
+    //adds the film planet title
+    const ul = document.createElement("ul");
+    const filmPlanetLabel = document.createTextNode("Film Planet");
+    ul.appendChild(filmPlanetLabel);
+    filmList.appendChild(ul);
+
+    //add the film planets
+    for(let j = 0; j <requestData.results[i].planets.length;j++){
+      const Oplanets = requestData.results[i].planets[j];
+      const getPlanet = new XMLHttpRequest();
+
+      getPlanet.addEventListener('load', function() {
+         const requestData = JSON.parse(this.responseText);
+         loadPlanets(ul,requestData.name);
+      });
+
+      getPlanet.open('GET' , Oplanets);
+      getPlanet.send();
+
+
+      console.log(Oplanets);
+    }
+  }
 }
+
+// function pullPlanetList
 
 function pullName() {
  const requestData = JSON.parse(this.responseText);
