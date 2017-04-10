@@ -23,6 +23,9 @@ getFilm.addEventListener('load', pullFilmList);
 getFilm.open('GET' , 'http://swapi.co/api/films/');
 getFilm.send();
 
+//a function that will execute when the list of films are loaded, it will
+//populate the newly created ul, called film planet, with planet names as listed items.
+
 function loadPlanets(ul, planetName){
   const li2 = document.createElement("li");
   const planetTextNode = document.createTextNode(planetName);
